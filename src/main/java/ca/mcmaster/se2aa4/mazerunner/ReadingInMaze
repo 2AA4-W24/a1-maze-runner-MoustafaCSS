@@ -1,0 +1,11 @@
+public class ReadingInMaze {
+
+    public static void fileExist(String[] args) {  //checks if the given file exists or not
+        return true
+    }
+
+    public static void 2D_array(String[] args) {  //turns the maze file into a 2D array  
+        return true
+    }
+    
+}
