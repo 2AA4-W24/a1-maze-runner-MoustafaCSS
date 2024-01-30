@@ -1,0 +1,7 @@
+public class VerifyingPath {
+
+    public static pathVerification(String[] args) { //reads in path inputed by user and checks if it is correct
+        return true     
+    }
+
+}
