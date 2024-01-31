@@ -41,11 +41,19 @@ public class Main {
             if (commandLine.hasOption("p")){
                 path = commandLine.getOptionValue("p");
             }
+            else {
+                throw new IllegalArgumentException();
+            }
 
             logger.info("**** Reading the maze from file " , file);
             BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            char[][] mazeArray = ReadingInMaze.convertToArray(file);
             
-            char[][] maze = ReadingInMaze.convertToArray(file);
+            PathSolver pathSolver = new PathSolver(mazeArray);
+            boolean isPathSolved = pathSolver.solveMaze(mazeArray, path);
+            System.out.println("Does the path solve the maze? " + isPathSolved);
+
 
             /*String line;
             while ((line = reader.readLine()) != null) {
