@@ -1,5 +1,8 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.cli.CommandLine;
@@ -20,7 +23,7 @@ public class Main {
         logger.info("** Starting Maze Runner");
         
         String file;
-        String userPath = "";
+        String path = "";
         String algorithm = "righthand"; //default algorithm (not for assignment 1)
 
         try {
@@ -48,23 +51,24 @@ public class Main {
 
             switch (algorithm) { //not for this assignment
                 case "righthand":
-                    solver = new RightHandAlgorithm(mazeArray);
+                    solver = new RightHandAlgorithm(maze);
                     break;
                 
                 default:
                     break; //unknown algorithm
             }
             
-            boolean isPathSolved = solver.solveMaze(mazeArray);
+            boolean isPathSolved = solver.solveMaze(maze);
 
             if (solver instanceof RightHandAlgorithm) {
-                String path = ((RightHandAlgorithm) solver).getPath();
+                path = ((RightHandAlgorithm) solver).getPath();
                 System.out.println("The correct path to solve this maze using the righthandalgorithm is: " + path);
             }
 
-            PathChecker pathChecker = new PathChecker(mazeArray);
-            boolean isUserPathValid = pathChecker.solveMaze(mazeArray, userPath);
+            PathChecker pathChecker = new PathChecker(maze);
+            boolean isUserPathValid = pathChecker.solveMaze(maze, path);
             System.out.println("Does the user's entered path solve the maze? " + isUserPathValid);
+
 
 
         } 

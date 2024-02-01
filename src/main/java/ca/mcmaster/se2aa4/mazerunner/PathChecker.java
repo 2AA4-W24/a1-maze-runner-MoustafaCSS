@@ -4,11 +4,10 @@ public class PathChecker {
 
     private enum Direction { left, right, up, down }
     private Direction currentDirection;
-
     private int currentRow;
     private int currentCol;
     private char[][] maze;
-    
+
     public PathChecker(char[][] maze) {  
         int[] entryPoint = EntryandExit.findEntryPoint(maze);
         this.currentRow = entryPoint[0];
@@ -20,7 +19,6 @@ public class PathChecker {
     private boolean isValidMove(int row, int col) {
         return ((row >= 0) && (row < maze.length) && (col >= 0) && (col < maze[0].length) && (maze[row][col] == ' '));
     }
-    
 
     private void turnLeft() {
         switch (currentDirection) {
@@ -56,48 +54,41 @@ public class PathChecker {
         }
     }
 
-    private void moveForward() {
+    private boolean moveForward() {
         int newRow = currentRow;
         int newCol = currentCol;
 
         switch (currentDirection) {
-            case left:
-                newCol--;
-                break;
-            case right:
-                newCol++;
-                break;
-            case up:
-                newRow--;
-                break;
-            case down:
-                newRow++;
-                break;        
+            case left -> newCol--;
+            case right -> newCol++;
+            case up -> newRow--;
+            case down -> newRow++;
         }
 
         if (isValidMove(newRow, newCol)) {
             currentRow = newRow;
             currentCol = newCol;
+            return true;
         }
-
+        return false;
     }
     
     public boolean solveMaze(char[][] maze, String path) {
         for (char move : path.toCharArray()) {
-
-            if (move == 'F') {
-                moveForward();
-            } else if (move == 'R') {
-                turnRight();
-            } else if (move == 'L') {
-                turnLeft();
+            switch (move) {
+                case 'F':
+                    if (!moveForward()) return false;
+                    break;
+                case 'R':
+                    turnRight();
+                    break;
+                case 'L':
+                    turnLeft();
+                    break;
             }
-
         }
 
         int[] exitPoint = EntryandExit.findExitPoint(maze);
         return currentRow == exitPoint[0] && currentCol == exitPoint[1];
-        
     }
-
 }
