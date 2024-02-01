@@ -1,14 +1,8 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.io.IOException;
-
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
@@ -21,11 +15,13 @@ public class Main {
         Options options = new Options();
         options.addOption("i", "input", true, "Input maze file");
         options.addOption("p", "path", true, "Input path");
-
+        options.addOption("a", "algorithm", true, "Maze solving algorithm");  //not for assignment 1
+        
         logger.info("** Starting Maze Runner");
         
         String file;
-        String path = "";
+        String userPath = "";
+        String algorithm = "righthand"; //default algorithm (not for assignment 1)
 
         try {
             
@@ -33,31 +29,48 @@ public class Main {
             
             if (commandLine.hasOption("i")){
                 file = commandLine.getOptionValue("i");
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException();
             }
 
             if (commandLine.hasOption("p")){
-                path = commandLine.getOptionValue("p");
+                userPath = commandLine.getOptionValue("p");
+            } else {
+                throw new IllegalArgumentException();
             }
 
-            logger.info("**** Reading the maze from file " , file);
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            
-            char[][] maze = ReadingInMaze.convertToArray(file);
+            if (commandLine.hasOption("a")){ //not for assignment 1
+                algorithm = commandLine.getOptionValue("a");
+            }
 
-            /*String line;
-            while ((line = reader.readLine()) != null) {
-                for (int idx = 0; idx < line.length(); idx++) {
-                    if (line.charAt(idx) == '#') {
-                        logger.trace("WALL ");
-                    } else if (line.charAt(idx) == ' ') {
-                        logger.trace("PASS ");
-                    }
-                }
-                logger.info(System.lineSeparator());
-            }*/
+            logger.info("**** Reading the maze from file " + file);
+            char[][] mazeArray = ReadingInMaze.convertToArray(file);
+
+            logger.info("**** Computing path");
+            
+            MazeSolver solver = null;
+
+            switch (algorithm) { //not for this assignment
+                case "righthand":
+                    solver = new RightHandAlgorithm(mazeArray);
+                    break;
+                
+                default:
+                    break; //unknown algorithm
+            }
+            
+            boolean isPathSolved = solver.solveMaze(mazeArray);
+
+            if (solver instanceof RightHandAlgorithm) {
+                String path = ((RightHandAlgorithm) solver).getPath();
+                System.out.println("The correct path to solve this maze using the righthandalgorithm is: " + path);
+            }
+
+            PathChecker pathChecker = new PathChecker(mazeArray);
+            boolean isUserPathValid = pathChecker.solveMaze(mazeArray, userPath);
+            System.out.println("Does the user's entered path solve the maze? " + isUserPathValid);
+
+
         } 
         catch(IllegalArgumentException e) {
             logger.error("/!\\ An error has occured /!\\");
