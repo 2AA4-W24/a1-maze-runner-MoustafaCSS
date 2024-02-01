@@ -34,17 +34,13 @@ public class Main {
             }
 
             if (commandLine.hasOption("p")){
-                userPath = commandLine.getOptionValue("p");
-            } else {
-                throw new IllegalArgumentException();
+                path = commandLine.getOptionValue("p");
             }
 
-            if (commandLine.hasOption("a")){ //not for assignment 1
-                algorithm = commandLine.getOptionValue("a");
-            }
-
-            logger.info("**** Reading the maze from file " + file);
-            char[][] mazeArray = ReadingInMaze.convertToArray(file);
+            logger.info("**** Reading the maze from file " , file);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            
+            char[][] maze = ReadingInMaze.convertToArray(file);
 
             logger.info("**** Computing path");
             

@@ -15,7 +15,7 @@ public class ReadingInMaze {
             
         String firstRow = reader.readLine();
 
-        while (firstRow != null) {  //counting the number of lines
+        while (firstRow != null) {  
             rows++;
             if (firstRow.length() > columns) {
                     columns = firstRow.length();
@@ -55,7 +55,7 @@ public class ReadingInMaze {
 
     }   
 
-    private static void printmazeArray(char[][] mazeArray) {
+    public static void printmazeArray(char[][] mazeArray) {
 
         for (int i = 0; i < mazeArray.length; i++) {
             for (int j = 0; j < mazeArray[i].length; j++) {
