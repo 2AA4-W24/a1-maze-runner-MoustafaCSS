@@ -8,7 +8,7 @@ public class RightHandAlgorithm implements MazeSolver {
     private int currentCol;
     private final char[][] maze;
     private final StringBuilder path;
-    private static final int MAX_STEPS = 10000000;
+    private static final int maxSteps = 10000000;
 
     public RightHandAlgorithm(char[][] maze) {
         this.maze = maze;
@@ -78,7 +78,7 @@ public class RightHandAlgorithm implements MazeSolver {
     public boolean solveMaze(char[][] maze) {
         int steps = 0;
 
-        while (!isExit() && steps < MAX_STEPS) {
+        while (!isExit() && steps < maxSteps) {
             if (canMove(getRightDirection(currentDirection))) {
                 turnRight();
                 moveForward();
@@ -91,7 +91,7 @@ public class RightHandAlgorithm implements MazeSolver {
             steps++;
         }
 
-        if (steps >= MAX_STEPS) {
+        if (steps >= maxSteps) {
             System.out.println("Reached maximum step limit. The maze may be too complex or too large.");
             return false;
         }
@@ -129,5 +129,5 @@ public class RightHandAlgorithm implements MazeSolver {
         }
         return factorizedPath.toString();
     }
-    
+
 }

@@ -101,13 +101,13 @@ public class Main {
         StringBuilder expandedPath = new StringBuilder();
         int count = 0; 
         for (int i = 0; i < path.length(); i++) {
-            char ch = path.charAt(i);
-            if (Character.isDigit(ch)) {
-                count = count * 10 + (ch - '0'); 
+            char character = path.charAt(i);
+            if (Character.isDigit(character)) {
+                count = count * 10 + (character - '0'); 
             } else {
-                int repeatTimes = Math.max(count, 1); 
-                for (int j = 0; j < repeatTimes; j++) {
-                    expandedPath.append(ch);
+                int repetitions = Math.max(count, 1); 
+                for (int j = 0; j < repetitions; j++) {
+                    expandedPath.append(character);
                 }
                 count = 0; 
             }
