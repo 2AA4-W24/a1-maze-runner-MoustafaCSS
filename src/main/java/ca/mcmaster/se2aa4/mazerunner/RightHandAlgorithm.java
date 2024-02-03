@@ -111,4 +111,23 @@ public class RightHandAlgorithm implements MazeSolver {
     public String getPath() {
         return path.toString();
     }
+
+    public String factorizePath(String path) {
+        StringBuilder factorizedPath = new StringBuilder();
+        int count = 1;
+        for (int i = 0; i < path.length(); i++) {
+            if (i + 1 < path.length() && path.charAt(i) == path.charAt(i + 1)) {
+                count++;
+            } else {
+                if (count > 1) {
+                    factorizedPath.append(count).append(path.charAt(i));
+                } else {
+                    factorizedPath.append(path.charAt(i));
+                }
+                count = 1;
+            }
+        }
+        return factorizedPath.toString();
+    }
+    
 }

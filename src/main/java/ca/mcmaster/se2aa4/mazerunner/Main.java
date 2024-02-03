@@ -24,6 +24,7 @@ public class Main {
         
         String file;
         String path = "";
+        String userPath = ""; 
         String algorithm = "righthand"; //default algorithm (not for assignment 1)
 
         try {
@@ -36,11 +37,12 @@ public class Main {
                 throw new IllegalArgumentException();
             }
 
+
             if (commandLine.hasOption("p")){
-                path = commandLine.getOptionValue("p");
+                userPath = commandLine.getOptionValue("p");
             }
 
-            logger.info("**** Reading the maze from file " , file);
+            logger.info("**** Reading the maze from file " + file);
             BufferedReader reader = new BufferedReader(new FileReader(file));
             
             char[][] maze = ReadingInMaze.convertToArray(file);
@@ -60,14 +62,24 @@ public class Main {
             
             boolean isPathSolved = solver.solveMaze(maze);
 
+            
             if (solver instanceof RightHandAlgorithm) {
-                path = ((RightHandAlgorithm) solver).getPath();
-                System.out.println("The correct path to solve this maze using the righthandalgorithm is: " + path);
+                RightHandAlgorithm rightHandSolver = (RightHandAlgorithm) solver;
+                String nonFactorizedPath = rightHandSolver.getPath();
+                String factorizedPath = rightHandSolver.factorizePath(nonFactorizedPath);
+                System.out.println("The correct path to solve this maze using the righthandalgorithm in factorized form is: " + factorizedPath);
             }
 
-            PathChecker pathChecker = new PathChecker(maze);
-            boolean isUserPathValid = pathChecker.solveMaze(maze, path);
-            System.out.println("Does the user's entered path solve the maze? " + isUserPathValid);
+        
+
+            if (commandLine.hasOption("p")){
+                userPath = commandLine.getOptionValue("p");
+                String expandedUserPath = expandPath(userPath);
+                
+                PathChecker pathChecker = new PathChecker(maze);
+                boolean isUserPathValid = pathChecker.solveMaze(maze, expandedUserPath);
+                System.out.println("Does the user's entered path solve the maze? " + isUserPathValid);
+            }
 
 
 
@@ -84,4 +96,23 @@ public class Main {
         logger.info("** End of MazeRunner");
 
     }
+
+    public static String expandPath(String path) {
+        StringBuilder expandedPath = new StringBuilder();
+        int count = 0; 
+        for (int i = 0; i < path.length(); i++) {
+            char ch = path.charAt(i);
+            if (Character.isDigit(ch)) {
+                count = count * 10 + (ch - '0'); 
+            } else {
+                int repeatTimes = Math.max(count, 1); 
+                for (int j = 0; j < repeatTimes; j++) {
+                    expandedPath.append(ch);
+                }
+                count = 0; 
+            }
+        }
+        return expandedPath.toString();
+    }
 }    
+    

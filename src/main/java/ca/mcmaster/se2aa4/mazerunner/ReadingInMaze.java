@@ -10,24 +10,22 @@ public class ReadingInMaze {
         
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
-        int rows = 0;
-        int columns = 0;
+        int numberOfRows = 0;
+        int numberOfColumns = 0;
             
         String firstRow = reader.readLine();
+        numberOfColumns = firstRow.length();
 
-        while (firstRow != null) {  
-            rows++;
-            if (firstRow.length() > columns) {
-                    columns = firstRow.length();
-                }
-                firstRow = reader.readLine();
+        while (firstRow != null) {  //counting the number of rows
+            numberOfRows++;
+            firstRow = reader.readLine();
         }   
 
         reader.close();
             
         BufferedReader reader2 = new BufferedReader(new FileReader(file));
             
-        char[][] mazeArray = new char[rows][columns]; 
+        char[][] mazeArray = new char[numberOfRows][numberOfColumns]; 
 
         int row = 0;
         String secondRow = "";
@@ -35,7 +33,7 @@ public class ReadingInMaze {
         while ((secondRow = reader2.readLine()) != null) { 
 
             char[] characters = secondRow.toCharArray();
-            for (int column = 0; column < columns; column++) {
+            for (int column = 0; column < numberOfColumns; column++) {
                 if (column < characters.length) {
                     mazeArray[row][column] = characters[column];
                 }
@@ -67,4 +65,5 @@ public class ReadingInMaze {
 }    
 
         
+            
             
